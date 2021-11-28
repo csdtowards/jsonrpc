@@ -416,6 +416,7 @@ fn is_option_type(ty: &syn::Type) -> bool {
 			}
 		},
 		_ => false,
+	}
 }
 
 pub fn generate_where_clause_serialization_predicates(
