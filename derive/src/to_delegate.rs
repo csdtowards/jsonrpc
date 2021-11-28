@@ -404,10 +404,18 @@ fn ident(s: &str) -> syn::Ident {
 }
 
 fn is_option_type(ty: &syn::Type) -> bool {
-	if let syn::Type::Path(path) = ty {
-		path.path.segments.first().map_or(false, |t| t.ident == "Option")
-	} else {
-		false
+	match ty {
+		syn::Type::Path(path) => {
+			path.path.segments.first().map_or(false, |t| t.ident == "Option")
+		},
+		syn::Type::Group(group) => {
+			if let syn::Type::Path(path) = &*group.elem {
+				path.path.segments.first().map_or(false, |t| t.ident == "Option")
+			} else {
+				false
+			}
+		},
+		_ => false,
 	}
 }
 
